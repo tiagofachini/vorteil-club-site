@@ -13,13 +13,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Normalize remote dir
+        id: remote-dir
+        run: |
+          dir="${{ secrets.FTP_REMOTE_ROOT }}"
+          [[ "$dir" != */ ]] && dir="$dir/"
+          echo "value=$dir" >> "$GITHUB_OUTPUT"
+
       - name: Deploy to Hostinger
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ secrets.FTP_REMOTE_ROOT }}
+          server-dir: ${{ steps.remote-dir.outputs.value }}
           protocol: ftps
           exclude: |
             **/.git*
