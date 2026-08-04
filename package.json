@@ -1,0 +1,24 @@
+{
+  "name": "vorteil-club-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "One-page estática do Vorteil Club (vorteilclub.com.br) — HTML/CSS puro, sem etapa de build. package.json existe apenas para tooling de preview local e deploy.",
+  "homepage": "https://vorteilclub.com.br",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tiagofachini/vorteil-club-site.git"
+  },
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "scripts": {
+    "dev": "serve . -l 5173",
+    "deploy": "node scripts/deploy.js"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "ftp-deploy": "^2.4.5",
+    "serve": "^14.2.3"
+  }
+}
