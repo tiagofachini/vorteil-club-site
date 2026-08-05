@@ -20,5 +20,10 @@
     "dotenv": "^16.4.5",
     "ftp-deploy": "^2.4.5",
     "serve": "^14.2.3"
+  },
+  "overrides": {
+    "ftp-deploy": {
+      "minimatch": "^9.0.7"
+    }
   }
 }
