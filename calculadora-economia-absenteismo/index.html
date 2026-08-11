@@ -97,11 +97,11 @@
             <div class="calc-field-head">
               <label for="colaboradoresNum">Número de colaboradores</label>
               <div class="calc-field-input">
-                <input type="number" id="colaboradoresNum" min="10" max="2000" step="1" value="100" aria-label="Número de colaboradores">
+                <input type="number" id="colaboradoresNum" min="10" max="20000" step="1" value="100" aria-label="Número de colaboradores">
               </div>
             </div>
-            <input type="range" id="colaboradoresRange" min="10" max="2000" step="1" value="100" aria-label="Número de colaboradores">
-            <div class="calc-range-labels"><span>10</span><span>2.000</span></div>
+            <input type="range" id="colaboradoresRange" min="10" max="20000" step="1" value="100" aria-label="Número de colaboradores">
+            <div class="calc-range-labels"><span>10</span><span>20.000</span></div>
           </div>
 
           <div class="calc-field">
@@ -131,16 +131,12 @@
             <div class="calc-field-head">
               <label for="reducaoNum">Redução esperada nas faltas com Vorteil</label>
               <div class="calc-field-input">
-                <input type="number" id="reducaoNum" min="0" max="30" step="1" value="10" aria-label="Redução esperada nas faltas, em porcentagem">
+                <input type="number" id="reducaoNum" min="0" max="100" step="1" value="10" aria-label="Redução esperada nas faltas, em porcentagem">
                 <span class="suffix">%</span>
               </div>
             </div>
-            <div class="calc-slider-wrap">
-              <input type="range" id="reducaoRange" min="0" max="30" step="1" value="10" aria-label="Redução esperada nas faltas">
-              <div class="calc-slider-mark" style="left:36.6667%"></div>
-            </div>
-            <div class="calc-range-labels"><span>0%</span><span>30%</span></div>
-            <p class="calc-slider-mark-legend">A marca em 11% indica a média registrada em clientes Vorteil <span class="footnote">[VALIDAR fonte antes do deploy]</span>. O valor do slider é a premissa que você está simulando.</p>
+            <input type="range" id="reducaoRange" min="0" max="100" step="1" value="10" aria-label="Redução esperada nas faltas">
+            <div class="calc-range-labels"><span>0%</span><span>100%</span></div>
           </div>
 
           <details class="calc-advanced">
@@ -187,10 +183,10 @@
       </div>
 
       <div class="calc-results">
-        <div class="calc-result-card" id="saldoCard">
-          <span class="calc-result-label">Saldo mensal estimado</span>
-          <p class="calc-result-value" id="saldoValue">R$ 0,00</p>
-          <p class="calc-result-note" id="saldoNote"></p>
+        <div class="calc-result-card" id="paybackCard">
+          <span class="calc-result-label">Tempo de retorno</span>
+          <p class="calc-result-value" id="paybackValue">—</p>
+          <p class="calc-result-note" id="paybackNote"></p>
         </div>
 
         <div class="calc-result-row">
@@ -224,12 +220,6 @@
         </div>
 
         <p class="calc-roi" id="roiLine" hidden></p>
-
-        <div class="calc-payback">
-          <span class="calc-payback-label">Tempo de retorno</span>
-          <p class="calc-payback-value" id="paybackValue">—</p>
-          <p class="calc-payback-note" id="paybackNote"></p>
-        </div>
 
         <a class="btn-primary calc-cta" id="whatsappCta" href="https://wa.me/5547992721115" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.32A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.18-1.77 1.25-.45.06-1.02.09-1.65-.1-.38-.12-.87-.28-1.5-.55-2.64-1.14-4.36-3.8-4.5-3.98-.13-.18-1.08-1.43-1.08-2.73s.68-1.93.92-2.2c.24-.26.53-.33.7-.33.18 0 .35 0 .5.01.16.01.38-.06.6.45.22.53.75 1.83.82 1.96.07.13.11.29.02.47-.09.18-.13.29-.26.45-.13.15-.27.34-.39.46-.13.13-.26.27-.11.53.15.26.68 1.11 1.46 1.8 1 .89 1.85 1.16 2.11 1.29.26.13.41.11.56-.07.15-.18.65-.75.82-1.01.17-.26.34-.22.57-.13.24.09 1.5.71 1.76.84.26.13.43.19.5.3.06.11.06.62-.16 1.24z"/></svg>
@@ -376,13 +366,11 @@ document.querySelectorAll('#navLinks a').forEach(function(a){
   var diasUteis = bindField('diasUteisRange', 'diasUteisNum', intOpts);
   var custoVorteil = bindField('custoVorteilRange', 'custoVorteilNum', currencyOpts);
 
-  var saldoCard = document.getElementById('saldoCard');
-  var saldoValue = document.getElementById('saldoValue');
-  var saldoNote = document.getElementById('saldoNote');
   var custoAbsenteismoValue = document.getElementById('custoAbsenteismoValue');
   var economiaValue = document.getElementById('economiaValue');
   var investimentoValue = document.getElementById('investimentoValue');
   var roiLine = document.getElementById('roiLine');
+  var paybackCard = document.getElementById('paybackCard');
   var paybackValue = document.getElementById('paybackValue');
   var paybackNote = document.getElementById('paybackNote');
   var whatsappCta = document.getElementById('whatsappCta');
@@ -397,15 +385,6 @@ document.querySelectorAll('#navLinks a').forEach(function(a){
     custoAbsenteismoValue.textContent = formatBRL(custoAbsenteismoMes);
     economiaValue.textContent = formatBRL(economiaMes);
     investimentoValue.textContent = formatBRL(custoVorteilMes);
-    saldoValue.textContent = formatBRL(saldoMes);
-
-    if(saldoMes > 0){
-      saldoCard.classList.add('positive');
-      saldoNote.textContent = 'Com essas premissas, a economia estimada supera o investimento no Vorteil.';
-    } else {
-      saldoCard.classList.remove('positive');
-      saldoNote.textContent = 'Com essas premissas, o investimento no Vorteil ainda não é coberto pela economia estimada.';
-    }
 
     if(saldoMes > 0 && custoVorteilMes > 0){
       var roi = economiaMes / custoVorteilMes;
@@ -416,16 +395,20 @@ document.querySelectorAll('#navLinks a').forEach(function(a){
     }
 
     if(custoVorteilMes <= 0){
+      paybackCard.classList.remove('positive');
       paybackValue.textContent = '—';
       paybackNote.textContent = 'Defina um custo por colaborador para simular o retorno.';
     } else if(saldoMes > 0){
+      paybackCard.classList.add('positive');
       paybackValue.textContent = 'Imediato, já no 1º mês';
       paybackNote.textContent = 'Como o investimento é mensal (sem custo inicial), a economia estimada já cobre o Vorteil desde o primeiro mês de uso.';
     } else if(economiaMes > 0){
       var mesesEquivalentes = custoVorteilMes / economiaMes;
+      paybackCard.classList.remove('positive');
       paybackValue.textContent = formatDecimal(mesesEquivalentes, 1) + ' meses de economia para cobrir 1 mês de investimento';
-      paybackNote.textContent = 'Nesse ritmo, a economia mensal estimada não chega a cobrir o custo mensal do Vorteil, que também se repete todo mês.';
+      paybackNote.textContent = '';
     } else {
+      paybackCard.classList.remove('positive');
       paybackValue.textContent = 'Sem economia estimada';
       paybackNote.textContent = 'Ajuste a redução esperada ou os dias perdidos para simular uma economia.';
     }
