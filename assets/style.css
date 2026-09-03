@@ -465,7 +465,6 @@
     padding:5px 12px;border-radius:999px;margin-bottom:14px;
   }
   .sin-scenario-card p,.sin-benefit p{font-size:.92rem;color:rgba(255,255,255,.82);line-height:1.6;}
-  .sin-scenario-card .validar{color:var(--gold);font-size:.72rem;font-weight:700;}
   .sin-benefit{display:flex;gap:12px;align-items:flex-start;}
   .sin-benefit svg{width:18px;height:18px;color:var(--gold);flex:none;margin-top:3px;}
   .sin-note{
@@ -615,10 +614,6 @@
   }
 
   .calc-field-note{font-size:.78rem;color:var(--muted);margin-top:8px;line-height:1.5;}
-  .validar-tag{
-    display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.03em;color:#8a5b0e;
-    background:#fdf3d9;padding:2px 8px;border-radius:6px;vertical-align:middle;
-  }
 
   /* ---------- Calculadora: comparação de sinistralidade ---------- */
   .calc-sin-compare{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:6px;}
