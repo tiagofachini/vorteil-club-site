@@ -56,8 +56,8 @@
   "description": "Telemedicina, atendimento médico online e descontos reais em farmácias, supermercados, ensino, varejo e lazer, oferecidos como benefício corporativo em todo o Brasil."
 }
 </script>
-<link rel="preload" href="/assets/style.css?v=20260906" as="style">
-<link rel="stylesheet" href="/assets/style.css?v=20260906">
+<link rel="preload" href="/assets/style.css?v=20260907" as="style">
+<link rel="stylesheet" href="/assets/style.css?v=20260907">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6ED8EJ4BJY"></script>
@@ -83,7 +83,16 @@
       <a href="/#beneficios">Benefícios</a>
       <a href="/#para-rh">Para RH</a>
       <a href="/#parceiros">Parceiros</a>
-      <a href="/calculadora-economia-absenteismo/">Calculadora</a>
+      <div class="nav-dropdown" id="navCalcDropdown">
+        <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+          Calculadoras
+          <svg class="nav-dropdown-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="/calculadora-economia-absenteismo/">Economia com Absenteísmo</a>
+          <a href="/calculadora-sinistralidade/">Sinistralidade do Plano</a>
+        </div>
+      </div>
     </nav>
     <div class="nav-cta">
       <a href="https://wa.me/5547992721115?text=Ol%C3%A1!%20Quero%20conhecer%20o%20Vorteil%20Club%20para%20minha%20empresa." target="_blank" rel="noopener" class="btn-primary btn-sm">
@@ -475,7 +484,7 @@
       <p class="sin-credibility">A economia real depende do perfil de uso da sua empresa. Por isso esse número precisa ser simulado com os dados da própria empresa, não prometido.</p>
 
       <div class="sin-cta">
-        <a href="/calculadora-economia-absenteismo/" class="btn-primary">
+        <a href="/calculadora-sinistralidade/" class="btn-primary">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
           Simule a redução de sinistralidade com os números da sua empresa
         </a>
@@ -617,7 +626,8 @@
           <li><a href="/politica-privacidade/">Política de Privacidade</a></li>
           <li><a href="/central-de-ajuda/">Central de Ajuda</a></li>
           <li><a href="/contato/">Contato</a></li>
-          <li><a href="/calculadora-economia-absenteismo/">Calculadora</a></li>
+          <li><a href="/calculadora-economia-absenteismo/">Calculadora de Absenteísmo</a></li>
+          <li><a href="/calculadora-sinistralidade/">Calculadora de Sinistralidade</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -646,6 +656,21 @@ document.getElementById('navToggle').addEventListener('click', function(){
 document.querySelectorAll('#navLinks a').forEach(function(a){
   a.addEventListener('click', function(){ document.getElementById('navLinks').classList.remove('open'); });
 });
+var navCalcDropdown = document.getElementById('navCalcDropdown');
+if(navCalcDropdown){
+  var navCalcToggle = navCalcDropdown.querySelector('.nav-dropdown-toggle');
+  navCalcToggle.addEventListener('click', function(e){
+    e.preventDefault();
+    var isOpen = navCalcDropdown.classList.toggle('open');
+    navCalcToggle.setAttribute('aria-expanded', isOpen);
+  });
+  document.addEventListener('click', function(e){
+    if(!navCalcDropdown.contains(e.target)){
+      navCalcDropdown.classList.remove('open');
+      navCalcToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
 </script>
 
 </body>
