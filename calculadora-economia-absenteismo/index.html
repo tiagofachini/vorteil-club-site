@@ -138,13 +138,13 @@
 
           <div class="calc-field">
             <div class="calc-field-head">
-              <label for="reducaoNum">Redução esperada nas faltas com Vorteil</label>
+              <label for="reducaoNum">Redução média nas faltas após o Vorteil</label>
               <div class="calc-field-input">
-                <input type="number" id="reducaoNum" min="0" max="100" step="1" value="10" aria-label="Redução esperada nas faltas, em porcentagem">
+                <input type="number" id="reducaoNum" min="0" max="100" step="1" value="10" aria-label="Redução média nas faltas após o Vorteil, em porcentagem">
                 <span class="suffix">%</span>
               </div>
             </div>
-            <input type="range" id="reducaoRange" min="0" max="100" step="1" value="10" aria-label="Redução esperada nas faltas">
+            <input type="range" id="reducaoRange" min="0" max="100" step="1" value="10" aria-label="Redução média nas faltas após o Vorteil">
             <div class="calc-range-labels"><span>0%</span><span>100%</span></div>
           </div>
 
@@ -175,64 +175,32 @@
           </details>
         </div>
 
-        <div class="calc-card">
+        <div class="calc-card" id="custoVorteilCard" hidden>
           <h2>Custo do Vorteil Club</h2>
           <div class="calc-field">
             <div class="calc-field-head">
               <label for="custoVorteilNum">Custo Vorteil por colaborador/mês</label>
               <div class="calc-field-input">
                 <span class="prefix">R$</span>
-                <input type="text" inputmode="decimal" id="custoVorteilNum" value="39,90" aria-label="Custo Vorteil por colaborador por mês em reais">
+                <input type="text" inputmode="decimal" id="custoVorteilNum" value="19,90" aria-label="Custo Vorteil por colaborador por mês em reais">
               </div>
             </div>
-            <input type="range" id="custoVorteilRange" min="19.90" max="59.90" step="0.10" value="39.90" aria-label="Custo Vorteil por colaborador por mês">
+            <input type="range" id="custoVorteilRange" min="19.90" max="59.90" step="0.10" value="19.90" aria-label="Custo Vorteil por colaborador por mês">
             <div class="calc-range-labels"><span>R$ 19,90</span><span>R$ 59,90</span></div>
           </div>
         </div>
       </div>
 
       <div class="calc-results">
-        <div class="calc-result-card" id="paybackCard">
-          <span class="calc-result-label">Tempo de retorno</span>
-          <p class="calc-result-value" id="paybackValue">—</p>
-          <p class="calc-result-note" id="paybackNote"></p>
+        <div class="calc-result-card positive" id="economiaCard">
+          <span class="calc-result-label">Economia aproximada no Absenteísmo</span>
+          <p class="calc-result-value" id="economiaValue">R$ 0,00</p>
+          <p class="calc-result-note" id="economiaNote">Economia mensal estimada com a redução das faltas por atestado.</p>
         </div>
-
-        <div class="calc-result-row">
-          <div class="calc-result-mini cost">
-            <div class="calc-result-mini-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            </div>
-            <div class="calc-result-mini-text">
-              <span>Custo mensal atual do absenteísmo</span>
-              <strong id="custoAbsenteismoValue">R$ 0,00</strong>
-            </div>
-          </div>
-          <div class="calc-result-mini savings">
-            <div class="calc-result-mini-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-            </div>
-            <div class="calc-result-mini-text">
-              <span>Economia mensal estimada com Vorteil</span>
-              <strong id="economiaValue">R$ 0,00</strong>
-            </div>
-          </div>
-          <div class="calc-result-mini invest">
-            <div class="calc-result-mini-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
-            </div>
-            <div class="calc-result-mini-text">
-              <span>Investimento mensal no Vorteil</span>
-              <strong id="investimentoValue">R$ 0,00</strong>
-            </div>
-          </div>
-        </div>
-
-        <p class="calc-roi" id="roiLine" hidden></p>
 
         <a class="btn-primary calc-cta" id="whatsappCta" href="https://wa.me/5547992721115" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.32A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.18-1.77 1.25-.45.06-1.02.09-1.65-.1-.38-.12-.87-.28-1.5-.55-2.64-1.14-4.36-3.8-4.5-3.98-.13-.18-1.08-1.43-1.08-2.73s.68-1.93.92-2.2c.24-.26.53-.33.7-.33.18 0 .35 0 .5.01.16.01.38-.06.6.45.22.53.75 1.83.82 1.96.07.13.11.29.02.47-.09.18-.13.29-.26.45-.13.15-.27.34-.39.46-.13.13-.26.27-.11.53.15.26.68 1.11 1.46 1.8 1 .89 1.85 1.16 2.11 1.29.26.13.41.11.56-.07.15-.18.65-.75.82-1.01.17-.26.34-.22.57-.13.24.09 1.5.71 1.76.84.26.13.43.19.5.3.06.11.06.62-.16 1.24z"/></svg>
-          Quero uma proposta
+          Experimente o Vorteil em sua empresa
         </a>
 
         <p class="calc-disclaimer">Simulação com premissas ajustáveis pelo usuário. Resultados reais variam conforme perfil da empresa.</p>
@@ -389,56 +357,23 @@ if(navCalcDropdown){
   var reducao = bindField('reducaoRange', 'reducaoNum', intOpts);
   var encargos = bindField('encargosRange', 'encargosNum', decimalOpts);
   var diasUteis = bindField('diasUteisRange', 'diasUteisNum', intOpts);
-  var custoVorteil = bindField('custoVorteilRange', 'custoVorteilNum', currencyOpts);
+  bindField('custoVorteilRange', 'custoVorteilNum', currencyOpts);
 
-  var custoAbsenteismoValue = document.getElementById('custoAbsenteismoValue');
   var economiaValue = document.getElementById('economiaValue');
-  var investimentoValue = document.getElementById('investimentoValue');
-  var roiLine = document.getElementById('roiLine');
-  var paybackCard = document.getElementById('paybackCard');
-  var paybackValue = document.getElementById('paybackValue');
-  var paybackNote = document.getElementById('paybackNote');
+  var economiaNote = document.getElementById('economiaNote');
   var whatsappCta = document.getElementById('whatsappCta');
 
   function recalc(){
     var custoDiaParado = (salario.get() * encargos.get()) / diasUteis.get();
     var custoAbsenteismoMes = dias.get() * custoDiaParado;
     var economiaMes = custoAbsenteismoMes * (reducao.get() / 100);
-    var custoVorteilMes = colaboradores.get() * custoVorteil.get();
-    var saldoMes = economiaMes - custoVorteilMes;
 
-    custoAbsenteismoValue.textContent = formatBRL(custoAbsenteismoMes);
     economiaValue.textContent = formatBRL(economiaMes);
-    investimentoValue.textContent = formatBRL(custoVorteilMes);
+    economiaNote.textContent = economiaMes > 0
+      ? 'Economia mensal estimada com a redução das faltas por atestado.'
+      : 'Ajuste a redução esperada ou os dias perdidos para ver a economia estimada.';
 
-    if(saldoMes > 0 && custoVorteilMes > 0){
-      var roi = economiaMes / custoVorteilMes;
-      roiLine.textContent = 'R$ ' + formatDecimal(roi, 2) + ' de retorno para cada R$ 1 investido';
-      roiLine.hidden = false;
-    } else {
-      roiLine.hidden = true;
-    }
-
-    if(custoVorteilMes <= 0){
-      paybackCard.classList.remove('positive');
-      paybackValue.textContent = '—';
-      paybackNote.textContent = 'Defina um custo por colaborador para simular o retorno.';
-    } else if(saldoMes > 0){
-      paybackCard.classList.add('positive');
-      paybackValue.textContent = 'Imediato, já no 1º mês';
-      paybackNote.textContent = 'Como o investimento é mensal (sem custo inicial), a economia estimada já cobre o Vorteil desde o primeiro mês de uso.';
-    } else if(economiaMes > 0){
-      var mesesEquivalentes = custoVorteilMes / economiaMes;
-      paybackCard.classList.remove('positive');
-      paybackValue.textContent = formatDecimal(mesesEquivalentes, 1) + ' meses de economia para cobrir 1 mês de investimento';
-      paybackNote.textContent = '';
-    } else {
-      paybackCard.classList.remove('positive');
-      paybackValue.textContent = 'Sem economia estimada';
-      paybackNote.textContent = 'Ajuste a redução esperada ou os dias perdidos para simular uma economia.';
-    }
-
-    var msg = 'Ola! Simulei a calculadora de absenteismo do Vorteil Club com ' + Math.round(colaboradores.get()) + ' colaboradores e o saldo mensal estimado foi ' + formatBRL(saldoMes) + '. Quero uma proposta.';
+    var msg = 'Ola! Simulei a calculadora de absenteismo do Vorteil Club com ' + Math.round(colaboradores.get()) + ' colaboradores. Economia mensal estimada: ' + formatBRL(economiaMes) + '. Quero experimentar o Vorteil na minha empresa.';
     whatsappCta.href = 'https://wa.me/5547992721115?text=' + encodeURIComponent(msg);
   }
 

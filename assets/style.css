@@ -572,7 +572,6 @@
     background:#fff;border:1px solid var(--line);border-left:4px solid var(--line);border-radius:14px;padding:18px 20px;
     display:flex;align-items:center;gap:14px;
   }
-  .calc-result-mini.cost{border-left-color:#c98a2b;}
   .calc-result-mini.savings{border-left-color:var(--green-800);}
   .calc-result-mini.invest{border-left-color:var(--gold);}
   .calc-result-mini-icon{
