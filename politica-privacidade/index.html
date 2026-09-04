@@ -209,16 +209,31 @@ document.querySelectorAll('#navLinks a').forEach(function(a){
 var navCalcDropdown = document.getElementById('navCalcDropdown');
 if(navCalcDropdown){
   var navCalcToggle = navCalcDropdown.querySelector('.nav-dropdown-toggle');
+  var navCalcCloseTimer = null;
+  function navCalcOpen(){
+    if(navCalcCloseTimer){ clearTimeout(navCalcCloseTimer); navCalcCloseTimer = null; }
+    navCalcDropdown.classList.add('open');
+    navCalcToggle.setAttribute('aria-expanded', 'true');
+  }
+  function navCalcClose(){
+    navCalcDropdown.classList.remove('open');
+    navCalcToggle.setAttribute('aria-expanded', 'false');
+  }
   navCalcToggle.addEventListener('click', function(e){
     e.preventDefault();
-    var isOpen = navCalcDropdown.classList.toggle('open');
-    navCalcToggle.setAttribute('aria-expanded', isOpen);
+    if(navCalcDropdown.classList.contains('open')){ navCalcClose(); } else { navCalcOpen(); }
+  });
+  navCalcDropdown.addEventListener('mouseenter', function(){
+    if(window.matchMedia('(min-width:981px)').matches){ navCalcOpen(); }
+  });
+  navCalcDropdown.addEventListener('mouseleave', function(){
+    if(window.matchMedia('(min-width:981px)').matches){ navCalcCloseTimer = setTimeout(navCalcClose, 250); }
+  });
+  navCalcDropdown.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ navCalcClose(); navCalcToggle.focus(); }
   });
   document.addEventListener('click', function(e){
-    if(!navCalcDropdown.contains(e.target)){
-      navCalcDropdown.classList.remove('open');
-      navCalcToggle.setAttribute('aria-expanded', 'false');
-    }
+    if(!navCalcDropdown.contains(e.target)){ navCalcClose(); }
   });
 }
 </script>
