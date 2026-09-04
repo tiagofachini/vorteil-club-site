@@ -135,38 +135,38 @@
 
           <div class="calc-field">
             <div class="calc-field-head">
-              <label for="consultasNum">Consultas por vida por ano</label>
+              <label for="consultasNum">Média de consultas por vida por ano</label>
               <div class="calc-field-input">
-                <input type="text" inputmode="decimal" id="consultasNum" value="3,0" aria-label="Consultas por vida por ano">
+                <input type="text" inputmode="decimal" id="consultasNum" value="3,0" aria-label="Média de consultas por vida por ano">
               </div>
             </div>
-            <input type="range" id="consultasRange" min="1" max="6" step="0.5" value="3" aria-label="Consultas por vida por ano">
-            <div class="calc-range-labels"><span>1</span><span>6</span></div>
+            <input type="range" id="consultasRange" min="0" max="100" step="0.5" value="3" aria-label="Média de consultas por vida por ano">
+            <div class="calc-range-labels"><span>0</span><span>100</span></div>
             <p class="calc-field-note">Default de mercado, usado como média de referência da ANS.</p>
           </div>
 
           <div class="calc-field">
             <div class="calc-field-head">
-              <label for="pctTeleNum">Consultas de baixa complexidade resolvidas por telemedicina</label>
+              <label for="pctTeleNum">Consultas de baixa complexidade sanáveis por telemedicina</label>
               <div class="calc-field-input">
-                <input type="number" id="pctTeleNum" min="10" max="50" step="1" value="30" aria-label="Percentual de consultas de baixa complexidade resolvidas por telemedicina">
+                <input type="number" id="pctTeleNum" min="10" max="50" step="1" value="30" aria-label="Percentual de consultas de baixa complexidade sanáveis por telemedicina">
                 <span class="suffix">%</span>
               </div>
             </div>
-            <input type="range" id="pctTeleRange" min="10" max="50" step="1" value="30" aria-label="Percentual de consultas resolvidas por telemedicina">
+            <input type="range" id="pctTeleRange" min="10" max="50" step="1" value="30" aria-label="Percentual de consultas sanáveis por telemedicina">
             <div class="calc-range-labels"><span>10%</span><span>50%</span></div>
             <p class="calc-field-note">Default conservador. Só suba esse número se a sua empresa já tiver dado real de migração.</p>
           </div>
 
-          <div class="calc-field">
+          <div class="calc-field" id="custoVorteilField" hidden>
             <div class="calc-field-head">
               <label for="custoVorteilNum">Custo mensal da telemedicina Vorteil por vida</label>
               <div class="calc-field-input">
                 <span class="prefix">R$</span>
-                <input type="text" inputmode="decimal" id="custoVorteilNum" value="39,90" aria-label="Custo mensal da telemedicina Vorteil por vida em reais">
+                <input type="text" inputmode="decimal" id="custoVorteilNum" value="19,90" aria-label="Custo mensal da telemedicina Vorteil por vida em reais">
               </div>
             </div>
-            <input type="range" id="custoVorteilRange" min="19.90" max="59.90" step="0.10" value="39.90" aria-label="Custo mensal da telemedicina Vorteil por vida">
+            <input type="range" id="custoVorteilRange" min="19.90" max="59.90" step="0.10" value="19.90" aria-label="Custo mensal da telemedicina Vorteil por vida">
             <div class="calc-range-labels"><span>R$ 19,90</span><span>R$ 59,90</span></div>
             <p class="calc-field-note">Valor de referência da tabela comercial vigente da Vorteil.</p>
           </div>
@@ -257,23 +257,14 @@
       </div>
 
       <div class="calc-results">
-        <div class="calc-result-card" id="posResultCard">
-          <span class="calc-result-label">Saldo estimado por ano</span>
-          <p class="calc-result-value" id="saldoValue">R$ 0,00</p>
-          <p class="calc-result-note" id="saldoNote"></p>
+        <div class="calc-result-card positive" id="posResultCard">
+          <span class="calc-result-label">Economia anual aproximada de sinistralidade</span>
+          <p class="calc-result-value" id="economiaAnualValue">R$ 0,00</p>
+          <p class="calc-result-note" id="economiaAnualNote">Economia estimada com a migração de consultas para a telemedicina.</p>
         </div>
 
         <div class="calc-result-row" id="posResultRow">
-          <div class="calc-result-mini savings">
-            <div class="calc-result-mini-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-            </div>
-            <div class="calc-result-mini-text">
-              <span>Economia direta estimada por ano</span>
-              <strong id="economiaDiretaValue">R$ 0,00</strong>
-            </div>
-          </div>
-          <div class="calc-result-mini invest">
+          <div class="calc-result-mini invest" id="custoTelemedicinaPosField" hidden>
             <div class="calc-result-mini-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
             </div>
@@ -301,7 +292,7 @@
         </div>
 
         <div class="calc-result-row" id="preResultRow" hidden>
-          <div class="calc-result-mini invest">
+          <div class="calc-result-mini invest" id="custoTelemedicinaPreField" hidden>
             <div class="calc-result-mini-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
             </div>
@@ -327,34 +318,10 @@
 
         <a class="btn-primary calc-cta" id="whatsappCta" href="https://wa.me/5547992721115" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.32A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.18-1.77 1.25-.45.06-1.02.09-1.65-.1-.38-.12-.87-.28-1.5-.55-2.64-1.14-4.36-3.8-4.5-3.98-.13-.18-1.08-1.43-1.08-2.73s.68-1.93.92-2.2c.24-.26.53-.33.7-.33.18 0 .35 0 .5.01.16.01.38-.06.6.45.22.53.75 1.83.82 1.96.07.13.11.29.02.47-.09.18-.13.29-.26.45-.13.15-.27.34-.39.46-.13.13-.26.27-.11.53.15.26.68 1.11 1.46 1.8 1 .89 1.85 1.16 2.11 1.29.26.13.41.11.56-.07.15-.18.65-.75.82-1.01.17-.26.34-.22.57-.13.24.09 1.5.71 1.76.84.26.13.43.19.5.3.06.11.06.62-.16 1.24z"/></svg>
-          Quero um piloto de 90 dias
+          Experimente o Vorteil em sua empresa
         </a>
 
         <p class="calc-disclaimer">Simulação com premissas ajustáveis pelo usuário. Resultados reais variam conforme o perfil de uso da sua empresa.</p>
-      </div>
-    </div>
-
-    <div class="calc-extra">
-      <div class="calc-card calc-scope-card">
-        <h2>O que não está nesta conta</h2>
-        <ul class="calc-scope-list">
-          <li>Redução de idas a pronto-socorro por causas de baixa complexidade.</li>
-          <li>Exames desnecessários evitados por uma primeira triagem em telemedicina.</li>
-          <li>Redução de absenteísmo por consultas mais rápidas e sem deslocamento.</li>
-        </ul>
-        <p>São ganhos possíveis, não calculados aqui. Para estimar o efeito no absenteísmo, use a <a href="/calculadora-economia-absenteismo/">calculadora de economia com absenteísmo</a>.</p>
-      </div>
-
-      <div class="calc-card calc-premises-card">
-        <h2>Premissas usadas nesta simulação</h2>
-        <ul class="calc-premises-list">
-          <li>Consultas por vida por ano: 3,0, usado como média de mercado, referência ANS.</li>
-          <li>Consultas de baixa complexidade resolvidas por telemedicina: 30%, default conservador definido pela Vorteil.</li>
-          <li>Custo mensal da telemedicina Vorteil por vida: R$ 39,90, tabela comercial vigente.</li>
-          <li>Custo médio por consulta, no pós-pagamento e na tabela do pré-pagamento: R$ 70,00, referência de 2015.</li>
-          <li>Coparticipação descontada do colaborador no pós-pagamento: 15%, padrão de mercado, ajustável no formulário.</li>
-          <li>Sinistralidade alvo da operadora no pré-pagamento: 70%, patamar em que o reajuste costuma começar a subir.</li>
-        </ul>
       </div>
     </div>
   </div>
@@ -523,9 +490,8 @@ if(navCalcDropdown){
   var preResultRow = document.getElementById('preResultRow');
   var preIllustrativeNote = document.getElementById('preIllustrativeNote');
 
-  var saldoValue = document.getElementById('saldoValue');
-  var saldoNote = document.getElementById('saldoNote');
-  var economiaDiretaValue = document.getElementById('economiaDiretaValue');
+  var economiaAnualValue = document.getElementById('economiaAnualValue');
+  var economiaAnualNote = document.getElementById('economiaAnualNote');
   var custoTelemedicinaPosValue = document.getElementById('custoTelemedicinaPosValue');
 
   var sinAtualValue = document.getElementById('sinAtualValue');
@@ -538,7 +504,6 @@ if(navCalcDropdown){
   var whatsappCta = document.getElementById('whatsappCta');
 
   var mode = 'pos';
-  var valuesChanged = false;
   document.querySelectorAll('input[name="planMode"]').forEach(function(radio){
     radio.addEventListener('change', function(){
       mode = radio.value;
@@ -551,9 +516,6 @@ if(navCalcDropdown){
       preIllustrativeNote.hidden = mode !== 'pre';
       recalc();
     });
-  });
-  document.querySelectorAll('.calc-inputs input').forEach(function(el){
-    el.addEventListener('input', function(){ valuesChanged = true; });
   });
 
   function recalc(){
@@ -568,26 +530,18 @@ if(navCalcDropdown){
 
     consultasMigradasLine.textContent = Math.round(consultasEvitadas).toLocaleString('pt-BR') + ' consultas por ano podem migrar para a telemedicina';
 
-    var saldoAno = 0;
+    var economiaDiretaAno = 0;
 
     if(mode === 'pos'){
       var custoEmpresaPorConsulta = custoConsultaPos.get() * (1 - copart.get() / 100);
-      var economiaDiretaAno = consultasEvitadas * custoEmpresaPorConsulta;
-      saldoAno = economiaDiretaAno - custoTelemedicinaAno;
+      economiaDiretaAno = consultasEvitadas * custoEmpresaPorConsulta;
 
-      saldoValue.textContent = formatBRL(saldoAno);
-      economiaDiretaValue.textContent = formatBRL(economiaDiretaAno);
+      economiaAnualValue.textContent = formatBRL(economiaDiretaAno);
       custoTelemedicinaPosValue.textContent = formatBRL(custoTelemedicinaAno);
 
-      if(saldoAno > 0){
-        posResultCard.classList.add('positive');
-        saldoNote.textContent = 'Economia direta estimada acima do custo da telemedicina no ano.';
-      } else {
-        posResultCard.classList.remove('positive');
-        saldoNote.textContent = valuesChanged
-          ? 'O saldo é negativo com os valores informados. Ajuste os campos acima com os dados reais da sua empresa.'
-          : 'Com os valores padrão o saldo é negativo; ajuste com os dados reais da sua empresa.';
-      }
+      economiaAnualNote.textContent = economiaDiretaAno > 0
+        ? 'Economia estimada com a migração de consultas para a telemedicina.'
+        : 'Aumente a média de consultas por vida para ver a economia estimada com a telemedicina.';
     } else {
       var receitaOperadoraAno = fatura.get() * 12;
       var sinistroAtualAno = receitaOperadoraAno * (sinistralidadeAtual.get() / 100);
@@ -606,9 +560,9 @@ if(navCalcDropdown){
 
     var msg;
     if(mode === 'pos'){
-      msg = 'Ola! Simulei a calculadora de sinistralidade do Vorteil Club no modelo pos-pagamento com ' + Math.round(vidasVal) + ' vidas. Consultas que podem migrar para telemedicina por ano: ' + Math.round(consultasEvitadas) + '. Saldo anual estimado: ' + formatBRL(saldoAno) + '. Quero avaliar um piloto de 90 dias com medicao real das consultas migradas.';
+      msg = 'Ola! Simulei a calculadora de sinistralidade do Vorteil Club no modelo pos-pagamento com ' + Math.round(vidasVal) + ' vidas. Consultas que podem migrar para telemedicina por ano: ' + Math.round(consultasEvitadas) + '. Economia anual estimada: ' + formatBRL(economiaDiretaAno) + '. Quero experimentar o Vorteil na minha empresa.';
     } else {
-      msg = 'Ola! Simulei a calculadora de sinistralidade do Vorteil Club no modelo pre-pagamento com ' + Math.round(vidasVal) + ' vidas. Sinistralidade atual: ' + sinAtualValue.textContent + '. Sinistralidade projetada: ' + sinProjetadaValue.textContent + '. Consultas que podem migrar por ano: ' + Math.round(consultasEvitadas) + '. Quero avaliar um piloto de 90 dias com medicao real das consultas migradas.';
+      msg = 'Ola! Simulei a calculadora de sinistralidade do Vorteil Club no modelo pre-pagamento com ' + Math.round(vidasVal) + ' vidas. Sinistralidade atual: ' + sinAtualValue.textContent + '. Sinistralidade projetada: ' + sinProjetadaValue.textContent + '. Consultas que podem migrar por ano: ' + Math.round(consultasEvitadas) + '. Quero experimentar o Vorteil na minha empresa.';
     }
     whatsappCta.href = 'https://wa.me/5547992721115?text=' + encodeURIComponent(msg);
   }
