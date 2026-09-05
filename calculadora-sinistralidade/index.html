@@ -102,7 +102,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="breadcrumbs"><a href="/">Início</a> / Calculadora de Sinistralidade do Plano de Saúde</div>
     <span class="section-label on-dark">Ferramenta gratuita para RH e financeiro</span>
     <h1>Calculadora de Sinistralidade do Plano de Saúde</h1>
-    <p>Simule quanto a telemedicina Vorteil pode reduzir o custo do plano de saúde que a sua empresa já paga, no pós-pagamento ou no pré-pagamento. Ajuste os campos para o perfil real da sua empresa: o cálculo roda inteiro no seu navegador, nenhum dado é enviado ou armazenado.</p>
+    <p>Simule quanto a telemedicina Vorteil pode reduzir o custo do plano de saúde que a sua empresa já paga, no pós-pagamento ou no pré-pagamento. Ajuste os campos para o perfil real da sua empresa: o cálculo roda inteiro no seu navegador. Só pedimos seu contato para te enviar a simulação pelo WhatsApp.</p>
   </div>
 </section>
 
@@ -327,12 +327,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <p class="calc-roi" id="consultasMigradasLine"></p>
 
-        <a class="btn-primary calc-cta" id="whatsappCta" href="https://wa.me/5547992721115" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.32A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.18-1.77 1.25-.45.06-1.02.09-1.65-.1-.38-.12-.87-.28-1.5-.55-2.64-1.14-4.36-3.8-4.5-3.98-.13-.18-1.08-1.43-1.08-2.73s.68-1.93.92-2.2c.24-.26.53-.33.7-.33.18 0 .35 0 .5.01.16.01.38-.06.6.45.22.53.75 1.83.82 1.96.07.13.11.29.02.47-.09.18-.13.29-.26.45-.13.15-.27.34-.39.46-.13.13-.26.27-.11.53.15.26.68 1.11 1.46 1.8 1 .89 1.85 1.16 2.11 1.29.26.13.41.11.56-.07.15-.18.65-.75.82-1.01.17-.26.34-.22.57-.13.24.09 1.5.71 1.76.84.26.13.43.19.5.3.06.11.06.62-.16 1.24z"/></svg>
-          Experimente o Vorteil em sua empresa
-        </a>
+        <form class="calc-lead-form" id="leadForm" novalidate>
+          <input type="text" class="calc-lead-input" id="leadName" placeholder="Seu nome" aria-label="Seu nome" autocomplete="name">
+          <input type="text" class="calc-lead-input" id="leadContact" placeholder="WhatsApp ou e-mail para contato" aria-label="WhatsApp ou e-mail para contato" autocomplete="tel">
+          <p class="calc-lead-error" id="leadError" hidden>Preencha seu nome e um WhatsApp ou e-mail para continuar.</p>
+          <button type="submit" class="btn-primary calc-cta" id="leadSubmit">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.32A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.18-1.77 1.25-.45.06-1.02.09-1.65-.1-.38-.12-.87-.28-1.5-.55-2.64-1.14-4.36-3.8-4.5-3.98-.13-.18-1.08-1.43-1.08-2.73s.68-1.93.92-2.2c.24-.26.53-.33.7-.33.18 0 .35 0 .5.01.16.01.38-.06.6.45.22.53.75 1.83.82 1.96.07.13.11.29.02.47-.09.18-.13.29-.26.45-.13.15-.27.34-.39.46-.13.13-.26.27-.11.53.15.26.68 1.11 1.46 1.8 1 .89 1.85 1.16 2.11 1.29.26.13.41.11.56-.07.15-.18.65-.75.82-1.01.17-.26.34-.22.57-.13.24.09 1.5.71 1.76.84.26.13.43.19.5.3.06.11.06.62-.16 1.24z"/></svg>
+            Experimente o Vorteil em sua empresa
+          </button>
+        </form>
 
-        <p class="calc-disclaimer">Simulação com premissas ajustáveis pelo usuário. Resultados reais variam conforme o perfil de uso da sua empresa.</p>
+        <p class="calc-disclaimer">O cálculo roda no seu navegador. Para receber essa simulação no WhatsApp, pedimos seu nome e contato, usados só para falar com você sobre o Vorteil Club.</p>
       </div>
     </div>
   </div>
@@ -527,7 +532,52 @@ if(navCalcDropdown){
   var quedaPontosValue = document.getElementById('quedaPontosValue');
 
   var consultasMigradasLine = document.getElementById('consultasMigradasLine');
-  var whatsappCta = document.getElementById('whatsappCta');
+  var leadForm = document.getElementById('leadForm');
+  var leadName = document.getElementById('leadName');
+  var leadContact = document.getElementById('leadContact');
+  var leadError = document.getElementById('leadError');
+
+  var SUPABASE_URL = 'https://uknlwfnmkuszfaycypch.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_uhmQP7xJLtgCmZq8N5U-mw_6cH2JM-5';
+
+  function submitCalculatorLead(payload){
+    fetch(SUPABASE_URL + '/rest/v1/calculator_leads', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    }).catch(function(){});
+  }
+
+  var currentWhatsappUrl = 'https://wa.me/5547992721115';
+  var currentSnapshot = null;
+
+  leadForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = leadName.value.trim();
+    var contact = leadContact.value.trim();
+    if(!name || !contact){
+      leadError.hidden = false;
+      return;
+    }
+    leadError.hidden = true;
+
+    window.open(currentWhatsappUrl, '_blank', 'noopener');
+
+    submitCalculatorLead({
+      calculator: 'sinistralidade',
+      name: name,
+      contact: contact,
+      mode: mode,
+      inputs: currentSnapshot,
+      result_summary: currentSnapshot ? currentSnapshot.result_summary : null,
+      page_url: window.location.pathname
+    });
+  });
 
   var mode = 'pos';
   document.querySelectorAll('input[name="planMode"]').forEach(function(radio){
@@ -584,13 +634,29 @@ if(navCalcDropdown){
       quedaPontosValue.textContent = formatDecimal(Math.max(quedaPontos, 0), 1) + ' p.p.';
     }
 
-    var msg;
+    var msg, resultSummary;
     if(mode === 'pos'){
-      msg = 'Ola! Simulei a calculadora de sinistralidade do Vorteil Club no modelo pos-pagamento com ' + Math.round(vidasVal) + ' vidas. Consultas que podem migrar para telemedicina por ano: ' + Math.round(consultasEvitadas) + '. Economia anual estimada: ' + formatBRL(economiaDiretaAno) + '. Quero experimentar o Vorteil na minha empresa.';
+      resultSummary = 'Economia anual estimada: ' + formatBRL(economiaDiretaAno);
+      msg = 'Ola! Simulei a calculadora de sinistralidade do Vorteil Club no modelo pos-pagamento com ' + Math.round(vidasVal) + ' vidas. Consultas que podem migrar para telemedicina por ano: ' + Math.round(consultasEvitadas) + '. ' + resultSummary + '. Quero experimentar o Vorteil na minha empresa.';
     } else {
-      msg = 'Ola! Simulei a calculadora de sinistralidade do Vorteil Club no modelo pre-pagamento com ' + Math.round(vidasVal) + ' vidas. Sinistralidade atual: ' + sinAtualValue.textContent + '. Sinistralidade projetada: ' + sinProjetadaValue.textContent + '. Consultas que podem migrar por ano: ' + Math.round(consultasEvitadas) + '. Quero experimentar o Vorteil na minha empresa.';
+      resultSummary = 'Sinistralidade atual: ' + sinAtualValue.textContent + '. Sinistralidade projetada: ' + sinProjetadaValue.textContent;
+      msg = 'Ola! Simulei a calculadora de sinistralidade do Vorteil Club no modelo pre-pagamento com ' + Math.round(vidasVal) + ' vidas. ' + resultSummary + '. Consultas que podem migrar por ano: ' + Math.round(consultasEvitadas) + '. Quero experimentar o Vorteil na minha empresa.';
     }
-    whatsappCta.href = 'https://wa.me/5547992721115?text=' + encodeURIComponent(msg);
+    currentWhatsappUrl = 'https://wa.me/5547992721115?text=' + encodeURIComponent(msg);
+    currentSnapshot = {
+      mode: mode,
+      vidas: vidasVal,
+      consultas_por_vida: consultasPorVidaVal,
+      pct_telemedicina: pctTele.get(),
+      custo_vorteil_mes: custoVorteilMesVal,
+      consultas_evitadas: consultasEvitadas,
+      custo_telemedicina_ano: custoTelemedicinaAno,
+      economia_direta_ano: mode === 'pos' ? economiaDiretaAno : null,
+      fatura_mensal: mode === 'pre' ? fatura.get() : null,
+      sinistralidade_atual: mode === 'pre' ? sinistralidadeAtual.get() : null,
+      sinistralidade_projetada: mode === 'pre' ? sinProjetadaValue.textContent : null,
+      result_summary: resultSummary
+    };
   }
 
   recalc();

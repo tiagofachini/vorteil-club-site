@@ -149,6 +149,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </a>
       </div>
     </div>
+
+    <div class="contact-form-card" id="contactFormCard">
+      <h2>Prefere que a gente fale com você?</h2>
+      <p class="contact-form-desc">Deixe seus dados que um consultor do Vorteil Club entra em contato.</p>
+      <form class="contact-form" id="contactForm" novalidate>
+        <input type="text" class="calc-lead-input" id="contactName" placeholder="Nome" aria-label="Nome" autocomplete="name" required>
+        <input type="text" class="calc-lead-input" id="contactCompany" placeholder="Empresa" aria-label="Empresa" autocomplete="organization" required>
+        <input type="email" class="calc-lead-input" id="contactEmail" placeholder="E-mail corporativo" aria-label="E-mail corporativo" autocomplete="email" required>
+        <select class="calc-lead-input" id="contactEmployeeCount" aria-label="Número de funcionários" required>
+          <option value="" disabled selected>Número de funcionários</option>
+          <option value="1-10">1 a 10</option>
+          <option value="11-50">11 a 50</option>
+          <option value="51-200">51 a 200</option>
+          <option value="201-500">201 a 500</option>
+          <option value="500+">Mais de 500</option>
+        </select>
+        <input type="tel" class="calc-lead-input" id="contactWhatsapp" placeholder="WhatsApp com DDD" aria-label="WhatsApp com DDD" autocomplete="tel" required>
+        <p class="calc-lead-error" id="contactFormError" hidden>Preencha todos os campos para continuar.</p>
+        <button type="submit" class="btn-primary" id="contactFormSubmit">Solicitar contato</button>
+      </form>
+      <div class="contact-form-success" id="contactFormSuccess" hidden>
+        <h2>Recebemos seus dados!</h2>
+        <p>Um consultor do Vorteil Club vai entrar em contato em breve.</p>
+      </div>
+    </div>
+
     <div class="prose">
       <p class="muted">Atendimento de segunda a sexta, em horário comercial. Respondemos o mais rápido possível pelo WhatsApp.</p>
     </div>
@@ -253,6 +279,75 @@ if(navCalcDropdown){
     if(!navCalcDropdown.contains(e.target)){ navCalcClose(); }
   });
 }
+</script>
+
+<script>
+(function(){
+  var SUPABASE_URL = 'https://uknlwfnmkuszfaycypch.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_uhmQP7xJLtgCmZq8N5U-mw_6cH2JM-5';
+
+  var form = document.getElementById('contactForm');
+  var card = document.getElementById('contactFormCard');
+  var errorEl = document.getElementById('contactFormError');
+  var submitBtn = document.getElementById('contactFormSubmit');
+  var successEl = document.getElementById('contactFormSuccess');
+
+  var nameEl = document.getElementById('contactName');
+  var companyEl = document.getElementById('contactCompany');
+  var emailEl = document.getElementById('contactEmail');
+  var employeeCountEl = document.getElementById('contactEmployeeCount');
+  var whatsappEl = document.getElementById('contactWhatsapp');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var name = nameEl.value.trim();
+    var company = companyEl.value.trim();
+    var email = emailEl.value.trim();
+    var employeeCount = employeeCountEl.value;
+    var whatsapp = whatsappEl.value.trim();
+
+    if(!name || !company || !email || !employeeCount || !whatsapp){
+      errorEl.textContent = 'Preencha todos os campos para continuar.';
+      errorEl.hidden = false;
+      return;
+    }
+    if(email.indexOf('@') === -1 || email.indexOf('.') === -1){
+      errorEl.textContent = 'Informe um e-mail válido.';
+      errorEl.hidden = false;
+      return;
+    }
+    errorEl.hidden = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
+
+    fetch(SUPABASE_URL + '/rest/v1/contact_submissions', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        name: name,
+        company: company,
+        work_email: email,
+        employee_count: employeeCount,
+        whatsapp: whatsapp
+      })
+    }).then(function(res){
+      if(!res.ok){ throw new Error('request failed'); }
+      form.hidden = true;
+      successEl.hidden = false;
+    }).catch(function(){
+      errorEl.textContent = 'Não conseguimos enviar agora. Tente novamente ou fale com a gente pelo WhatsApp.';
+      errorEl.hidden = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Solicitar contato';
+    });
+  });
+})();
 </script>
 
 </body>
