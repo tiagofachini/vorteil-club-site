@@ -92,7 +92,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         Fale conosco
       </a>
       <button type="button" class="btn-primary btn-sm js-lead-modal-trigger">
-        <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.32A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.18-1.77 1.25-.45.06-1.02.09-1.65-.1-.38-.12-.87-.28-1.5-.55-2.64-1.14-4.36-3.8-4.5-3.98-.13-.18-1.08-1.43-1.08-2.73s.68-1.93.92-2.2c.24-.26.53-.33.7-.33.18 0 .35 0 .5.01.16.01.38-.06.6.45.22.53.75 1.83.82 1.96.07.13.11.29.02.47-.09.18-.13.29-.26.45-.13.15-.27.34-.39.46-.13.13-.26.27-.11.53.15.26.68 1.11 1.46 1.8 1 .89 1.85 1.16 2.11 1.29.26.13.41.11.56-.07.15-.18.65-.75.82-1.01.17-.26.34-.22.57-.13.24.09 1.5.71 1.76.84.26.13.43.19.5.3.06.11.06.62-.16 1.24z"/></svg>
         Experimente Agora!
       </button>
       <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">&#9776;</button>
@@ -682,6 +681,7 @@ if(navCalcDropdown){
 <div class="lead-modal-backdrop" id="leadModalBackdrop" hidden>
   <div class="lead-modal" role="dialog" aria-modal="true" aria-labelledby="leadModalTitle">
     <button type="button" class="lead-modal-close" id="leadModalClose" aria-label="Fechar">&times;</button>
+    <div id="leadModalFormWrap">
     <h2 id="leadModalTitle">Experimente o Vorteil na sua empresa</h2>
     <p class="lead-modal-desc">Deixe seus dados que um consultor entra em contato.</p>
     <form class="contact-form" id="leadModalForm" novalidate>
@@ -700,6 +700,7 @@ if(navCalcDropdown){
       <p class="calc-lead-error" id="leadModalError" hidden></p>
       <button type="submit" class="btn-primary" id="leadModalSubmit">Experimente Agora!</button>
     </form>
+    </div>
     <div class="contact-form-success" id="leadModalSuccess" hidden>
       <h2>Recebemos seus dados!</h2>
       <p>Um consultor do Vorteil Club vai entrar em contato em breve.</p>
@@ -715,6 +716,7 @@ if(navCalcDropdown){
   var backdrop = document.getElementById('leadModalBackdrop');
   var closeBtn = document.getElementById('leadModalClose');
   var form = document.getElementById('leadModalForm');
+  var formWrap = document.getElementById('leadModalFormWrap');
   var errorEl = document.getElementById('leadModalError');
   var submitBtn = document.getElementById('leadModalSubmit');
   var successEl = document.getElementById('leadModalSuccess');
@@ -736,7 +738,7 @@ if(navCalcDropdown){
   }
   function resetModal(){
     form.reset();
-    form.hidden = false;
+    formWrap.hidden = false;
     successEl.hidden = true;
     errorEl.hidden = true;
     submitBtn.disabled = false;
@@ -798,7 +800,7 @@ if(navCalcDropdown){
       })
     }).then(function(res){
       if(!res.ok){ throw new Error('request failed'); }
-      form.hidden = true;
+      formWrap.hidden = true;
       successEl.hidden = false;
     }).catch(function(){
       errorEl.textContent = 'Não conseguimos enviar agora. Tente novamente ou fale com a gente pelo WhatsApp.';
