@@ -278,10 +278,6 @@ if(navCalcDropdown){
       <button type="submit" class="btn-primary" id="leadModalSubmit">Experimente Agora!</button>
     </form>
     </div>
-    <div class="contact-form-success" id="leadModalSuccess" hidden>
-      <h2>Recebemos seus dados!</h2>
-      <p>Um consultor do Vorteil Club vai entrar em contato em breve.</p>
-    </div>
   </div>
 </div>
 
@@ -296,7 +292,6 @@ if(navCalcDropdown){
   var formWrap = document.getElementById('leadModalFormWrap');
   var errorEl = document.getElementById('leadModalError');
   var submitBtn = document.getElementById('leadModalSubmit');
-  var successEl = document.getElementById('leadModalSuccess');
 
   var nameEl = document.getElementById('leadModalName');
   var companyEl = document.getElementById('leadModalCompany');
@@ -316,7 +311,6 @@ if(navCalcDropdown){
   function resetModal(){
     form.reset();
     formWrap.hidden = false;
-    successEl.hidden = true;
     errorEl.hidden = true;
     submitBtn.disabled = false;
     submitBtn.textContent = 'Experimente Agora!';
@@ -377,8 +371,7 @@ if(navCalcDropdown){
       })
     }).then(function(res){
       if(!res.ok){ throw new Error('request failed'); }
-      formWrap.hidden = true;
-      successEl.hidden = false;
+      window.location.href = '/contato/obrigado/';
     }).catch(function(){
       errorEl.textContent = 'Não conseguimos enviar agora. Tente novamente ou fale com a gente pelo WhatsApp.';
       errorEl.hidden = false;

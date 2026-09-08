@@ -174,10 +174,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button type="submit" class="btn-primary" id="contactFormSubmit">Solicitar contato</button>
       </form>
       </div>
-      <div class="contact-form-success" id="contactFormSuccess" hidden>
-        <h2>Recebemos seus dados!</h2>
-        <p>Um consultor do Vorteil Club vai entrar em contato em breve.</p>
-      </div>
     </div>
 
     <div class="prose">
@@ -292,10 +288,8 @@ if(navCalcDropdown){
   var SUPABASE_KEY = 'sb_publishable_uhmQP7xJLtgCmZq8N5U-mw_6cH2JM-5';
 
   var form = document.getElementById('contactForm');
-  var formIntro = document.getElementById('contactFormIntro');
   var errorEl = document.getElementById('contactFormError');
   var submitBtn = document.getElementById('contactFormSubmit');
-  var successEl = document.getElementById('contactFormSuccess');
 
   var nameEl = document.getElementById('contactName');
   var companyEl = document.getElementById('contactCompany');
@@ -343,8 +337,7 @@ if(navCalcDropdown){
       })
     }).then(function(res){
       if(!res.ok){ throw new Error('request failed'); }
-      formIntro.hidden = true;
-      successEl.hidden = false;
+      window.location.href = '/contato/obrigado/';
     }).catch(function(){
       errorEl.textContent = 'Não conseguimos enviar agora. Tente novamente ou fale com a gente pelo WhatsApp.';
       errorEl.hidden = false;
@@ -378,10 +371,6 @@ if(navCalcDropdown){
       <button type="submit" class="btn-primary" id="leadModalSubmit">Experimente Agora!</button>
     </form>
     </div>
-    <div class="contact-form-success" id="leadModalSuccess" hidden>
-      <h2>Recebemos seus dados!</h2>
-      <p>Um consultor do Vorteil Club vai entrar em contato em breve.</p>
-    </div>
   </div>
 </div>
 
@@ -396,7 +385,6 @@ if(navCalcDropdown){
   var formWrap = document.getElementById('leadModalFormWrap');
   var errorEl = document.getElementById('leadModalError');
   var submitBtn = document.getElementById('leadModalSubmit');
-  var successEl = document.getElementById('leadModalSuccess');
 
   var nameEl = document.getElementById('leadModalName');
   var companyEl = document.getElementById('leadModalCompany');
@@ -416,7 +404,6 @@ if(navCalcDropdown){
   function resetModal(){
     form.reset();
     formWrap.hidden = false;
-    successEl.hidden = true;
     errorEl.hidden = true;
     submitBtn.disabled = false;
     submitBtn.textContent = 'Experimente Agora!';
@@ -477,8 +464,7 @@ if(navCalcDropdown){
       })
     }).then(function(res){
       if(!res.ok){ throw new Error('request failed'); }
-      formWrap.hidden = true;
-      successEl.hidden = false;
+      window.location.href = '/contato/obrigado/';
     }).catch(function(){
       errorEl.textContent = 'Não conseguimos enviar agora. Tente novamente ou fale com a gente pelo WhatsApp.';
       errorEl.hidden = false;
