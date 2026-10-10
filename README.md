@@ -2,7 +2,7 @@
 
 One-page estática (HTML/CSS puro, sem dependências externas exceto imagens hospedadas no CDN da Betalabs) reconstruída a partir do site original vorteilclub.com.br.
 
-Não há etapa de build — é um único `index.html`. O `package.json` existe só para dar suporte a preview local e ao deploy automatizado.
+Não há etapa de build e **o projeto não tem nenhuma dependência de terceiros** (o `package.json` só define o comando `dev`). Isso é proposital: sem pacotes npm não há o que o scanner de vulnerabilidades da Hostinger ou o Dependabot sinalizar, e não há o que atualizar.
 
 ## Ambientes
 
@@ -12,11 +12,10 @@ Não há etapa de build — é um único `index.html`. O `package.json` existe s
 ## Preview local
 
 ```bash
-npm install
 npm run dev
 ```
 
-Abre em `http://localhost:5173`.
+Abre em `http://localhost:5173`. Precisa só do Node 18 ou superior, sem `npm install`. O servidor (`scripts/dev-server.js`) usa apenas módulos nativos e escuta somente em `127.0.0.1`.
 
 ## Configurar o deploy automático para a Hostinger (uma única vez)
 
@@ -43,10 +42,14 @@ gh secret set FTP_REMOTE_ROOT
 
 ## Deploy manual (fallback)
 
-Caso quiera rodar o deploy à mão em vez de esperar o GitHub Actions:
+Para rodar o deploy sem fazer um novo push, dispare o mesmo workflow à mão:
 
 ```bash
-cp .env.example .env   # preencha com os dados de FTP
-npm install
-npm run deploy
+gh workflow run deploy-hostinger.yml
 ```
+
+Ou pelo site: aba **Actions** → **Deploy to Hostinger** → **Run workflow**.
+
+## Segurança do que vai para o servidor
+
+O deploy envia só as páginas do site (HTML, CSS, `robots.txt`, `sitemap.xml`). Arquivos de projeto (`package.json`, `README.md`, `scripts/`, `.github/`, `.env*`) não devem ficar públicos. Além de excluí-los do upload, o workflow remove essas cópias do servidor a cada deploy, caso algum outro processo as tenha deixado lá.
