@@ -48,10 +48,11 @@ jobs:
             **/package-lock.json
             **/README.md
 
+
       # Arquivos de projeto não podem ficar na raiz publicada: ficam acessíveis pela
       # internet e o scanner de vulnerabilidades da Hostinger lê os manifestos de
-      # dependências que estiverem lá. O prefixo "-" no comando faz o curl ignorar o
-      # erro quando o arquivo não existe, então este passo é idempotente.
+      # dependências que estiverem lá. O prefixo "*" no comando do curl faz ele seguir
+      # em frente quando o arquivo não existe, então este passo é idempotente.
       - name: Remove project files from the web root
         env:
           FTP_HOST: ${{ steps.ftp.outputs.host }}
@@ -59,25 +60,30 @@ jobs:
           FTP_USER: ${{ secrets.FTP_USER }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
-          quote=()
-          for f in package.json package-lock.json README.md .gitignore .env .env.example \
-                   scripts/deploy.js scripts/dev-server.js .github/workflows/deploy-hostinger.yml; do
-            quote+=(-Q "-DELE ${FTP_DIR}${f}")
-          done
-          for d in .github/workflows .github scripts; do
-            quote+=(-Q "-RMD ${FTP_DIR}${d}")
-          done
+          files="package.json package-lock.json README.md .gitignore .env .env.example scripts/deploy.js scripts/dev-server.js .github/workflows/deploy-hostinger.yml"
 
-          if ! listing=$(curl --silent --ssl-reqd --insecure --connect-timeout 30 \
+          quote=()
+          for f in $files; do quote+=(-Q "*DELE ${FTP_DIR}${f}"); done
+          for d in .github/workflows .github scripts; do quote+=(-Q "*RMD ${FTP_DIR}${d}"); done
+
+          if ! curl --silent --ssl-reqd --insecure --connect-timeout 30 \
                  --user "${FTP_USER}:${FTP_PASSWORD}" "${quote[@]}" --list-only \
-                 "ftp://${FTP_HOST}${FTP_DIR}" 2>&1); then
+                 "ftp://${FTP_HOST}${FTP_DIR}" > /dev/null 2>&1; then
             echo "::warning::Não foi possível acessar o servidor para remover arquivos de projeto."
-            exit 0
           fi
 
-          left=$(printf '%s\n' "$listing" | grep -xE 'package(-lock)?\.json|README\.md|\.gitignore|\.env.*|scripts|\.github|node_modules' || true)
-          if [ -n "$left" ]; then
-            echo "::warning::Ainda há arquivos de projeto no servidor: $(echo $left)"
+          # Confere pelo lado de fora, como qualquer visitante ou scanner veria
+          # (o parâmetro único evita responder pelo cache do CDN).
+          exposed=""
+          for f in $files; do
+            case "$f" in .env*) continue ;; esac
+            code=$(curl --silent --output /dev/null --write-out '%{http_code}' --connect-timeout 15 \
+                     "https://vorteilclub.com.br/${f}?cb=${GITHUB_RUN_ID}" || true)
+            if [ "$code" = "200" ]; then exposed="$exposed $f"; fi
+          done
+
+          if [ -n "$exposed" ]; then
+            echo "::warning::Ainda acessíveis em vorteilclub.com.br:$exposed"
           else
-            echo "Raiz publicada limpa: nenhum arquivo de projeto encontrado."
+            echo "Verificado: nenhum arquivo de projeto está acessível em vorteilclub.com.br."
           fi
