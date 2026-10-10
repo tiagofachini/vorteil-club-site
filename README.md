@@ -50,6 +50,10 @@ gh workflow run deploy-hostinger.yml
 
 Ou pelo site: aba **Actions** → **Deploy to Hostinger** → **Run workflow**.
 
-## Segurança do que vai para o servidor
+## Dependências e relatório de vulnerabilidades da Hostinger
 
-O deploy envia só as páginas do site (HTML, CSS, `robots.txt`, `sitemap.xml`). Arquivos de projeto (`package.json`, `README.md`, `scripts/`, `.github/`, `.env*`) não devem ficar públicos. Além de excluí-los do upload, o workflow remove essas cópias do servidor a cada deploy, caso algum outro processo as tenha deixado lá.
+O relatório de vulnerabilidades da Hostinger vem do `npm install` + auditoria que a própria hospedagem executa a cada push (ela clona o repositório, não só recebe o FTP). Por isso o `package.json` **não deve declarar dependências**: qualquer pacote adicionado aqui volta a aparecer no relatório e passa a exigir atualização.
+
+Se precisar de uma ferramenta de desenvolvimento, prefira executá-la sob demanda (`npx`) em vez de declará-la no `package.json`.
+
+O workflow do FTP (`deploy-hostinger.yml`) envia só as páginas do site (HTML, CSS, `robots.txt`, `sitemap.xml`). Se o deploy do Git da Hostinger também estiver ativo na mesma pasta, os dois escrevem no mesmo lugar e o FTP pode falhar de forma intermitente (erro `550`). Mantenha só um dos caminhos ativo.
