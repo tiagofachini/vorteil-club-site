@@ -57,3 +57,12 @@ O relatório de vulnerabilidades da Hostinger vem do `npm install` + auditoria q
 Se precisar de uma ferramenta de desenvolvimento, prefira executá-la sob demanda (`npx`) em vez de declará-la no `package.json`.
 
 O workflow do FTP (`deploy-hostinger.yml`) envia só as páginas do site (HTML, CSS, `robots.txt`, `sitemap.xml`). Se o deploy do Git da Hostinger também estiver ativo na mesma pasta, os dois escrevem no mesmo lugar e o FTP pode falhar de forma intermitente (erro `550`). Mantenha só um dos caminhos ativo.
+
+## Formulários: como as mensagens chegam por e-mail
+
+Todos os formulários do site (página Contato, o modal "Experimente Agora!" e as duas calculadoras) enviam para `api/contato.php`. Ele valida os dados e manda um e-mail para `contato@vorteilclub.com.br` usando só o `mail()` do PHP da Hostinger, sem banco de dados e sem serviço de terceiros. Nada é gravado em disco além de um contador temporário de limite de envios (hash do IP e horários).
+
+- **Remetente:** o e-mail chega do remetente padrão da hospedagem, com o visitante em `Reply-To` (o botão "Responder" já escreve para ele). O assunto começa com `[Site]`, útil para criar um filtro no Gmail.
+- **Por que não sai como `@vorteilclub.com.br`:** o e-mail do domínio fica no Google Workspace e o SPF só autoriza o Google. Um remetente do domínio enviado pela Hostinger seria tratado como falsificação. Se um dia o SPF/DKIM do domínio passar a incluir a Hostinger, basta preencher a constante `REMETENTE` no topo do arquivo.
+- **Proteções:** origem do site, tempo mínimo na página, limite por IP e geral por hora, campo-isca e remoção de quebras de linha em tudo que vira cabeçalho (anti injeção de cabeçalho).
+- **Só funciona em `vorteilclub.com.br`.** No GitHub Pages (staging) não há PHP, então os formulários de lá falham.

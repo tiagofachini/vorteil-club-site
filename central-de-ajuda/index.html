@@ -377,8 +377,6 @@ if(navCalcDropdown){
 
 <script>
 (function(){
-  var SUPABASE_URL = 'https://uknlwfnmkuszfaycypch.supabase.co';
-  var SUPABASE_KEY = 'sb_publishable_uhmQP7xJLtgCmZq8N5U-mw_6cH2JM-5';
 
   var backdrop = document.getElementById('leadModalBackdrop');
   var closeBtn = document.getElementById('leadModalClose');
@@ -446,15 +444,11 @@ if(navCalcDropdown){
     submitBtn.disabled = true;
     submitBtn.textContent = 'Enviando...';
 
-    fetch(SUPABASE_URL + '/rest/v1/contact_submissions', {
+    fetch('/api/contato.php', {
       method: 'POST',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_KEY,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        elapsed: Math.round(performance.now()),
         name: name,
         company: company,
         work_email: email,
